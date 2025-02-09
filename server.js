@@ -6,6 +6,17 @@ const token = 'EAAIcsyXdrwsBO8ZAgrXF7q1jRSLT016bYMLLFjfUIJ7oRvc1ZCN2OFDBJEjO504p
 const phoneNumberId = '531391063399476'; // Your phone number ID from Meta
 const url = `https://graph.facebook.com/v16.0/${phoneNumberId}/messages`;
 app.use(express.json());
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config(); // Load environment variables
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.log(err));
 
 // Verify Webhook (for the first time setup)
 app.get('/webhook', (req, res) => {
@@ -107,17 +118,6 @@ app.use(express.json());
   app.use(express.json());
 
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/nourish', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-  });
 
 app.post("/chat", async (req, res) => {
     try {
